@@ -1,0 +1,34 @@
+Name,Data type,Address,Comment
+Item_at_Entry,Bool,%I0.0,Box at end of entry conveyor
+Item_at_Exit,Bool,%I0.1,Box at exit conveyor
+Moving_X,Bool,%I0.2,Arm moving horizontally
+Moving_Z,Bool,%I0.3,Arm moving vertically
+Detected,Bool,%I0.4,Box detected under the arm
+Start_PB,Bool,%I0.5,Start button
+Stop_PB,Bool,%I0.6,Stop button (normally closed: TRUE = healthy)
+Reset_PB,Bool,%I0.7,Reset button
+EStop_OK,Bool,%I1.0,Emergency stop (normally closed: TRUE = healthy)
+Mode_Auto,Bool,%I1.1,Auto/Manual selector
+Entry_Conveyor,Bool,%Q0.0,Entry belt
+Exit_Conveyor,Bool,%Q0.1,Exit belt
+X_Out,Bool,%Q0.2,Arm horizontal move
+Z_Out,Bool,%Q0.3,Arm vertical move
+Grab_Out,Bool,%Q0.4,Gripper
+Start_Light,Bool,%Q0.5,Running lamp
+Reset_Light,Bool,%Q0.6,Fault lamp
+Stop_Light,Bool,%Q0.7,Idle lamp
+St_Wait,Bool,%M10.0,State: waiting for a box
+St_LowPick,Bool,%M10.1,State: lowering to pick
+St_Grab,Bool,%M10.2,State: gripping
+St_RaisePick,Bool,%M10.3,State: raising with box
+St_ExtendX,Bool,%M10.4,State: swinging out
+St_LowPlace,Bool,%M10.5,State: lowering to place
+St_Release,Bool,%M10.6,State: releasing box
+St_RaisePlace,Bool,%M10.7,State: raising after place
+St_RetractX,Bool,%M11.0,State: swinging back
+St_Fault,Bool,%M11.1,State: fault
+St_Idle,Bool,%M11.2,State: idle
+SawMov,Bool,%M11.3,Axis has been seen moving
+MovDone,Bool,%M11.6,Axis moved and stopped
+T_Wd,TON,%DB3,Watchdog timer 20 s
+T_Dwell,TON,%DB4,Grab/release dwell timer 500 ms
