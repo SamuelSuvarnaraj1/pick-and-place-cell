@@ -20,6 +20,8 @@ The brain also looks after safety:
 - **Emergency stop:** shuts everything down at once. The machine will not restart until someone clears the problem with the Reset button.
 - **Watchdog (a stopwatch):** if a move takes too long, something is probably stuck, so the machine stops itself and raises a fault.
 
+There is also a simple display screen, built with Siemens WinCC, that shows the belts, the arm and the machine's status lamps. It only shows information; it has no buttons.
+
 ## Demo videos
 
 | Video | What it shows |
@@ -28,6 +30,7 @@ The brain also looks after safety:
 | [`videos/clip2_panel_closeup.mp4`](videos/clip2_panel_closeup.mp4) | The control panel (Start, Stop, Reset, Auto selector) next to the running line |
 | [`videos/clip3_estop_recovery.mp4`](videos/clip3_estop_recovery.mp4) | Emergency stop, fault, Reset, then a restart |
 | [`videos/clip4_watchdog_fault.mp4`](videos/clip4_watchdog_fault.mp4) | A stuck move: the watchdog trips after 20 seconds, then the machine recovers |
+| [`videos/clip5_hmi_demo.mp4`](videos/clip5_hmi_demo.mp4) | The WinCC operator screen next to Factory I/O: normal run, emergency stop, recovery |
 
 ---
 
@@ -40,6 +43,7 @@ The brain also looks after safety:
 | Siemens TIA Portal | V21 (trial) | Writing and downloading the program |
 | Siemens S7-PLCSIM | V21 | Simulated S7-1500 CPU (CPU 1513-1 PN) |
 | Factory I/O | 2.5.10, Ultimate Edition | 3D machine simulation |
+| Siemens WinCC (in TIA Portal) | V21, TP1200 Comfort panel, runtime simulation | Operator screen |
 | Language | Ladder (LAD) | All sequence logic (no SCL) |
 
 ### How the program works
@@ -103,6 +107,41 @@ Screenshots from the tests:
 - `SawMov` stayed set after a fault, which could skip steps on restart. Fixed by clearing it when the cycle starts.
 - `MovDone` stayed true within a scan, so several steps could be skipped in one pass. Fixed by clearing it at each transition that uses it.
 
+### Operator screen (WinCC)
+
+A display-only screen for a simulated TP1200 Comfort panel, built in TIA Portal and run with the WinCC Runtime simulation next to Factory I/O. It shows what the PLC is doing and has no buttons, so the PLC program is unchanged.
+
+It is a top-down view of the cell: the entry belt (lower lane) and the exit belt (upper lane), with a gripper block at the left end that moves between them.
+
+| Screen element | PLC address | What it shows |
+|---|---|---|
+| Entry belt | %Q0.0 | Green when running |
+| Exit belt | %Q0.1 | Green when running |
+| Gripper position | %Q0.2 | Over the entry lane (0) or the exit lane (1) |
+| Gripper colour | %Q0.4 | Orange when holding a box |
+| Running lamp | %Q0.5 | Green when running |
+| Idle lamp | %Q0.7 | Amber when idle |
+| Fault lamp | %M11.1 | Red when in fault |
+| Arm Lowered lamp | %Q0.3 | Orange when the arm is down |
+| E-Stop OK lamp | %I1.0 | Green when healthy, red when pressed |
+
+![Operator screen while running](docs/hmi_running.png)
+
+![Operator screen after an emergency stop](docs/hmi_fault.png)
+
+More screenshots: [`docs/hmi_idle.png`](docs/hmi_idle.png) (after Stop) and [`docs/hmi_watchdog.png`](docs/hmi_watchdog.png) (watchdog fault, with the E-stop still healthy).
+
+| Test | Result |
+|---|---|
+| Screen connects and shows live PLC values | Passed |
+| Normal cycle: belts, gripper, lamps follow the real arm | Passed |
+| Stop button mid-cycle: Idle lamp on, no fault | Passed |
+| Emergency stop mid-cycle: Fault and E-Stop OK lamps red | Passed |
+| Reset and Start after the E-stop: running again | Passed |
+| Watchdog stall: Fault lamp red, E-Stop OK still green | Passed |
+
+Not done: an alarm list, and a formal comparison against the PLC watch table. The full list is in [`docs/HMI_Test_Plan.md`](docs/HMI_Test_Plan.md).
+
 ### How to run it
 
 You need TIA Portal V21, S7-PLCSIM V21 and Factory I/O (Ultimate Edition, S7-PLCSIM V20-21 driver). The order matters:
@@ -111,13 +150,14 @@ You need TIA Portal V21, S7-PLCSIM V21 and Factory I/O (Ultimate Edition, S7-PLC
 2. In PLCSIM, import and run `factory-io/FactoryIOConnectSequenceForS7PlcSim1500.xlsx`, bound to the PLC instance.
 3. Open `factory-io/PickPlaceCell_Final.factoryio` in Factory I/O. In the driver (Siemens S7-PLCSIM, model S7-1500 V20+), check that the mapping is **Stop = %I0.6** and **Reset = %I0.7**, then click **Connect**.
 4. Press **Play**. On the panel, press **Reset**, set the selector to **Auto**, then press **Start**.
+5. To see the operator screen, select `HMI_PickPlace` in the TIA Portal project tree and click **Start simulation**. If WinCC Runtime shows a licence notice, acknowledge it; it is only a simulation notice.
 
 ## Repository layout
 
 ```
 README.md
-docs/           ladder PDF, screenshots
-tia-project/    TIA archive (.zap21), tag lists, ladder notes
+docs/           ladder PDF, screenshots, HMI test plan
+tia-project/    TIA archive (.zap21, includes the HMI), tag lists, ladder notes
 factory-io/     scene file, connect sequence
 videos/         demo clips
 ```
