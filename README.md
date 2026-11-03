@@ -24,13 +24,15 @@ There is also a simple display screen, built with Siemens WinCC, that shows the 
 
 ## Demo videos
 
+The clips play on YouTube. The original files are also in the [`videos/`](videos/) folder.
+
 | Video | What it shows |
 |---|---|
-| [`videos/clip1_normal_cycle.mp4`](videos/clip1_normal_cycle.mp4) | The machine running its normal pick-and-place cycle |
-| [`videos/clip2_panel_closeup.mp4`](videos/clip2_panel_closeup.mp4) | The control panel (Start, Stop, Reset, Auto selector) next to the running line |
-| [`videos/clip3_estop_recovery.mp4`](videos/clip3_estop_recovery.mp4) | Emergency stop, fault, Reset, then a restart |
-| [`videos/clip4_watchdog_fault.mp4`](videos/clip4_watchdog_fault.mp4) | A stuck move: the watchdog trips after 20 seconds, then the machine recovers |
-| [`videos/clip5_hmi_demo.mp4`](videos/clip5_hmi_demo.mp4) | The WinCC operator screen next to Factory I/O: normal run, emergency stop, recovery |
+| [clip1 normal cycle](https://youtu.be/pPUQ6S-7mSo) | The machine running its normal pick-and-place cycle |
+| [clip2 panel closeup](https://youtu.be/TY0LuxWRCwM) | The control panel (Start, Stop, Reset, Auto selector) next to the running line |
+| [clip3 estop recovery](https://youtu.be/wNWWHTNZOcI) | Emergency stop, fault, Reset, then a restart |
+| [clip4 watchdog fault](https://youtu.be/Ff9eVRab4tg) | A stuck move: the watchdog trips after 20 seconds, then the machine recovers |
+| [clip5 hmi demo](https://youtu.be/3i0g0fADizQ) | The WinCC operator screen next to Factory I/O: normal run, emergency stop, recovery |
 
 ---
 
